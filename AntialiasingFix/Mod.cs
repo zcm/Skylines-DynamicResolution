@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using ColossalFramework.Plugins;
-using ICities;
+﻿using ICities;
 using UnityEngine;
 
 namespace DynamicResolution
@@ -8,31 +6,10 @@ namespace DynamicResolution
 
     public class Mod : IUserMod
     {
-        public static bool IsModActive()
-        {
-            var pluginManager = PluginManager.instance;
-            var plugins = Util.GetPrivate<Dictionary<string, PluginManager.PluginInfo>>(pluginManager, "m_Plugins");
-
-            foreach (var item in plugins)
-            {
-                if (item.Value.name != "406629464")
-                {
-                    continue;
-                }
-
-                return item.Value.isEnabled;
-            }
-
-            return false;
-        }
-
 
         public string Name
         {
-            get
-            {
-                return "Dynamic resolution";
-            }
+            get { return "Dynamic resolution"; }
         }
 
         public string Description
