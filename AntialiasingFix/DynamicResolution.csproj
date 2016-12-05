@@ -30,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
@@ -58,10 +59,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy DynamicResolution.dll "C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\406629464"</PostBuildEvent>
+    <!-- <PostBuildEvent>copy DynamicResolution.dll "C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\406629464"</PostBuildEvent> -->
+    <PostBuildEvent>copy DynamicResolution.dll "C:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Files\Mods\TestDynamicResolution"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>del "C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\406629464\DynamicResolution.dll"</PreBuildEvent>
+    <!-- <PreBuildEvent>del "C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\406629464\DynamicResolution.dll"</PreBuildEvent> -->
+    <PreBuildEvent>del "C:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Files\Mods\TestDynamicResolution\DynamicResolution.dll"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DynamicResolution")]
+[assembly: AssemblyTitle("DynamicResolution (Fixed for 1.6)")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DynamicResolution")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyProduct("DynamicResolution (Fixed for 1.6)")]
+[assembly: AssemblyCopyright("Copyright © 2015-2016 nlight/Gradius Twin")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

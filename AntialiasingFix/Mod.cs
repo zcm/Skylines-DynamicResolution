@@ -9,12 +9,12 @@ namespace DynamicResolution
 
         public string Name
         {
-            get { return "Dynamic resolution"; }
+            get { return "Dynamic Resolution (Fixed for 1.6)"; }
         }
 
         public string Description
         {
-            get { return "Allows you to upsample/ downsample from any resolution"; }
+            get { return "Better antialiasing. Upsample/downsample from any resolution."; }
         }
 
     }
