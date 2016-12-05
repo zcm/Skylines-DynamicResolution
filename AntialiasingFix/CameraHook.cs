@@ -239,7 +239,7 @@ public class CameraHook : MonoBehaviour
         GUILayout.Label(String.Format("Internal resolution: {0}x{1}", (int)width, (int)height));
         GUILayout.BeginHorizontal();
 
-        userSSAAFactor = GUILayout.HorizontalSlider(userSSAAFactor, 0.25f, 3.0f, GUILayout.Width(256));
+        userSSAAFactor = GUILayout.HorizontalSlider(userSSAAFactor, 0.25f, 5.0f, GUILayout.Width(256));
 
         if (!config.unlockSlider)
         {
@@ -278,6 +278,22 @@ public class CameraHook : MonoBehaviour
             else if (userSSAAFactor <= 3.0f)
             {
                 userSSAAFactor = 3.0f;
+            }
+            else if (userSSAAFactor <= 3.5f)
+            {
+                userSSAAFactor = 3.5f;
+            }
+            else if (userSSAAFactor <= 4.0f)
+            {
+                userSSAAFactor = 4.0f;
+            }
+            else if (userSSAAFactor <= 4.5f)
+            {
+                userSSAAFactor = 4.5f;
+            }
+            else if (userSSAAFactor <= 5.0f)
+            {
+                userSSAAFactor = 5.0f;
             }
         }
 
