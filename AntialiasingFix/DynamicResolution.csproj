@@ -60,11 +60,18 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <!-- <PostBuildEvent>copy DynamicResolution.dll "C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\406629464"</PostBuildEvent> -->
-    <PostBuildEvent>copy DynamicResolution.dll "C:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Files\Mods\TestDynamicResolution"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <!-- <PreBuildEvent>del "C:\Program Files (x86)\Steam\steamapps\workshop\content\255710\406629464\DynamicResolution.dll"</PreBuildEvent> -->
-    <PreBuildEvent>del "C:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Files\Mods\TestDynamicResolution\DynamicResolution.dll"</PreBuildEvent>
+    <!-- <PostBuildEvent>copy DynamicResolution.dll "C:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Files\Mods\TestDynamicResolution"</PostBuildEvent> -->
+    <PostBuildEvent>
+setlocal
+set CS_LOCAL_MOD_DIR=%25LocalAppData%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)
+(robocopy . "%25CS_LOCAL_MOD_DIR%25" $(TargetFileName) /njh /njs /np /v) ^&amp; if %25%25ERRORLEVEL%25%25 LEQ 1 (
+  (robocopy "$(ProjectDir)..\UnityProject543\AssetBundles\Windows" "%25CS_LOCAL_MOD_DIR%25" "dynamicresolutionshaders.*" /njh /njs /np /v) ^&amp; if %25%25ERRORLEVEL%25%25 LEQ 1 (
+    echo.
+    echo Mod Directory -^&gt; %25CS_LOCAL_MOD_DIR%25\ &amp; endlocal &amp; exit 0
+  )
+)
+endlocal
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -73,4 +80,13 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterClean">
+    <Exec Command="
+setlocal
+set CS_LOCAL_MOD_DIR=%25LocalAppData%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)
+for %25%25x in (&quot;%25CS_LOCAL_MOD_DIR%25\$(TargetFileName)&quot; &quot;%25CS_LOCAL_MOD_DIR%25\dynamicresolutionshaders&quot; &quot;%25CS_LOCAL_MOD_DIR%25\dynamicresolutionshaders.manifest&quot;) do (echo Deleting %25%25x &amp; del %25%25x)
+endlocal
+" />
+  </Target>
+
 </Project>
