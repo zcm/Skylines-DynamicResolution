@@ -9,7 +9,7 @@ namespace DynamicResolution
 
         public string Name
         {
-            get { return "Dynamic Resolution (Fixed for 1.6)"; }
+            get { return "Dynamic Resolution (Fixed for 1.7)"; }
         }
 
         public string Description

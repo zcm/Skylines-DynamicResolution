@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 723476185
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: dynamicresolutionshaders
+      Dependencies: {}
