@@ -11,6 +11,7 @@ public class CameraHook : MonoBehaviour
 
     public float userSSAAFactor = 1.0f;
     public float currentSSAAFactor = 1.0f;
+    public float sliderMaximum = 3.0f;
 
     private bool initialized = false;
 
@@ -21,8 +22,6 @@ public class CameraHook : MonoBehaviour
 
     public bool showConfigWindow = false;
     private Rect windowRect = new Rect(64, 64, 350, 170);
-
-    private static readonly string configPath = "DynamicResolutionConfig.xml";
 
     public Configuration config;
     public CameraController cameraController;
@@ -44,7 +43,7 @@ public class CameraHook : MonoBehaviour
     {
         instance = this;
 
-        config = Configuration.Deserialize(configPath);
+        config = Configuration.Deserialize(Configuration.DEFAULT_CONFIG_PATH);
         if (config == null)
         {
             config = new Configuration();
@@ -63,7 +62,7 @@ public class CameraHook : MonoBehaviour
     public void SaveConfig()
     {
         config.ssaaFactor = userSSAAFactor;
-        Configuration.Serialize(configPath, config);
+        Configuration.Serialize(Configuration.DEFAULT_CONFIG_PATH, config);
     }
 
     public void SetInGameAA(bool state)
@@ -239,7 +238,19 @@ public class CameraHook : MonoBehaviour
         GUILayout.Label(String.Format("Internal resolution: {0}x{1}", (int)width, (int)height));
         GUILayout.BeginHorizontal();
 
-        userSSAAFactor = GUILayout.HorizontalSlider(userSSAAFactor, 0.25f, 5.0f, GUILayout.Width(256));
+        sliderMaximum = 3.0f;
+
+        switch (config.sliderMaximumIndex)
+        {
+            case 2:
+                sliderMaximum = 5.0f;
+                break;
+            case 1:
+                sliderMaximum = 4.0f;
+                break;
+        }
+
+        userSSAAFactor = GUILayout.HorizontalSlider(userSSAAFactor, 0.25f, sliderMaximum, GUILayout.Width(256));
 
         if (!config.unlockSlider)
         {
