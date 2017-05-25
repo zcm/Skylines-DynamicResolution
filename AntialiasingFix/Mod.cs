@@ -24,6 +24,10 @@ namespace DynamicResolution
         public void OnSettingsUI(UIHelperBase helperBase)
         {
             config = Configuration.Deserialize(Configuration.DEFAULT_CONFIG_PATH);
+            if (config == null)
+            {
+                config = new Configuration();
+            }
 
             UIHelper generalHelper = (UIHelper)helperBase.AddGroup("Dynamic Resolution Settings");
             UIPanel generalPanel = (UIPanel)generalHelper.self;
