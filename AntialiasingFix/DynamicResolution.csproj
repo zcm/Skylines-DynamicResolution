@@ -65,7 +65,7 @@
 setlocal
 set CS_LOCAL_MOD_DIR=%25LocalAppData%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)
 (robocopy . "%25CS_LOCAL_MOD_DIR%25" $(TargetFileName) /njh /njs /np /v) ^&amp; if %25%25ERRORLEVEL%25%25 LEQ 1 (
-  (robocopy "$(ProjectDir)..\UnityProject553\AssetBundles\Windows" "%25CS_LOCAL_MOD_DIR%25" "dynamicresolutionshaders.*" /njh /njs /np /v) ^&amp; if %25%25ERRORLEVEL%25%25 LEQ 1 (
+  (robocopy "$(ProjectDir)..\UnityProject563\AssetBundles\Windows" "%25CS_LOCAL_MOD_DIR%25" "dynamicresolutionshaders.*" /njh /njs /np /v) ^&amp; if %25%25ERRORLEVEL%25%25 LEQ 1 (
     echo.
     echo Mod Directory -^&gt; %25CS_LOCAL_MOD_DIR%25\ &amp; endlocal &amp; exit 0
   )
