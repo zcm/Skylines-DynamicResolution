@@ -14,6 +14,8 @@ namespace DynamicResolution
         public static Camera mainCamera;
         public Camera camera;
 
+        private Rect unitRect;
+
         private Material downsampleShader;
         private Material downsampleX2Shader;
 
@@ -158,6 +160,8 @@ namespace DynamicResolution
         {
             camera = GetComponent<Camera>();
 
+            unitRect = new Rect(0f, 0f, 1f, 1f);
+
             LoadShaders();
 
             undergroundView = FindObjectOfType<UndergroundView>();
@@ -224,9 +228,12 @@ namespace DynamicResolution
                 return;
             }
 
+            var oldRect = mainCamera.rect;
+            mainCamera.rect = unitRect;
             mainCamera.targetTexture = fullResRT;
             mainCamera.Render();
             mainCamera.targetTexture = null;
+            mainCamera.rect = oldRect;
             
             float factor = CameraHook.instance.currentSSAAFactor;
 
