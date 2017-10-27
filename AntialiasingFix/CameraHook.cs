@@ -7,6 +7,11 @@ public class CameraHook : MonoBehaviour
 
     public static CameraHook instance = null;
 
+#if DEBUG
+    public static Rect mainCameraRect;
+    public static Rect undergroundCameraRect;
+#endif
+
     private RenderTexture rt;
 
     public float userSSAAFactor = 1.0f;
@@ -21,7 +26,12 @@ public class CameraHook : MonoBehaviour
     private CameraRenderer cameraRenderer;
 
     public bool showConfigWindow = false;
+
+#if DEBUG
+    private Rect windowRect = new Rect(64, 64, 350, 230);
+#else
     private Rect windowRect = new Rect(64, 64, 350, 170);
+#endif
 
     public Configuration config;
     public CameraController cameraController;
@@ -333,6 +343,16 @@ public class CameraHook : MonoBehaviour
             SaveConfig();
         }
 
+#if DEBUG
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Main camera rect: " + DebugFormatRect(mainCameraRect));
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Underground camera rect: " + DebugFormatRect(undergroundCameraRect));
+        GUILayout.EndHorizontal();
+#endif
+
         GUILayout.Label("FPS: " + fps);
 
         GUILayout.BeginHorizontal();
@@ -355,7 +375,16 @@ public class CameraHook : MonoBehaviour
         GUILayout.EndHorizontal();
     }
 
-
+#if DEBUG
+    private string DebugFormatRect(Rect rect)
+    {
+        if (rect == null)
+        {
+            return "(null)";
+        }
+        return "x=" + rect.x + " y=" + rect.y + " " + rect.width + "x" + rect.height;
+    }
+#endif
 }
 
 

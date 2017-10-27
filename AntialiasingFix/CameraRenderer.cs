@@ -2,12 +2,27 @@
 using System.Reflection;
 using UnityEngine;
 using ColossalFramework.Plugins;
+using ColossalFramework.UI;
+using ColossalFramework;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace DynamicResolution
 {
+    class Redirect
+    {
+        public MethodInfo from;
+        public RedirectCallsState state;
+
+        internal Redirect(MethodInfo from, RedirectCallsState state)
+        {
+            this.from = from;
+            this.state = state;
+        }
+    }
+
     public class CameraRenderer : MonoBehaviour
     {
-
         public RenderTexture fullResRT;
         public RenderTexture halfVerticalResRT;
 
@@ -26,7 +41,26 @@ namespace DynamicResolution
 
         private static FieldInfo undergroundRGBDField;
 
+        private static CameraController cameraController;
+        private static FieldInfo cachedFreeCameraField;
+
         private static string cachedModPath = null;
+
+        private Stack<Redirect> redirectionStack = new Stack<Redirect>();
+
+        private void pushRedirect(MethodInfo from, MethodInfo to)
+        {
+            redirectionStack.Push(new Redirect(from, RedirectionHelper.RedirectCalls(from, to)));
+        }
+
+        private void revertAllRedirects()
+        {
+            while (redirectionStack.Count > 0)
+            {
+                Redirect redirect = redirectionStack.Pop();
+                RedirectionHelper.RevertRedirect(redirect.from, redirect.state);
+            }
+        }
 
         static string modPath
         {
@@ -170,11 +204,22 @@ namespace DynamicResolution
 
             undergroundCamera = Util.GetPrivate<Camera>(undergroundView, "m_undergroundCamera");
 
-            RedirectionHelper.RedirectCalls
-            (
+            cameraController = FindObjectOfType<CameraController>();
+            cachedFreeCameraField = typeof (CameraController)
+                .GetField("m_cachedFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            pushRedirect(
                 typeof (UndergroundView).GetMethod("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic),
-                typeof (CameraRenderer).GetMethod("UndegroundViewLateUpdate", BindingFlags.Instance | BindingFlags.NonPublic)
-            );
+                typeof (CameraRenderer).GetMethod("UndegroundViewLateUpdate", BindingFlags.Instance | BindingFlags.NonPublic));
+
+            pushRedirect(
+                typeof (CameraController).GetMethod("UpdateFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic),
+                typeof (CameraRenderer).GetMethod("CameraControllerUpdateFreeCamera", BindingFlags.Instance | BindingFlags.NonPublic));
+        }
+
+        void OnDestroy()
+        {
+            revertAllRedirects();
         }
 
         public void Update()
@@ -199,6 +244,9 @@ namespace DynamicResolution
 
             if (undergroundCamera != null && mainCamera != null)
             {
+#if DEBUG
+                CameraHook.undergroundCameraRect = undergroundCamera.rect;
+#endif
                 if (undergroundCamera.cullingMask != 0)
                 {
                     int width = CameraHook.instance.width;
@@ -221,6 +269,28 @@ namespace DynamicResolution
             }
         }
 
+        void CameraControllerUpdateFreeCamera()
+        {
+            bool m_cachedFreeCamera = Util.GetFieldValue<bool>(cachedFreeCameraField, cameraController);
+
+            if (cameraController.m_freeCamera != m_cachedFreeCamera)
+            {
+                m_cachedFreeCamera = cameraController.m_freeCamera;
+                Util.SetFieldValue(cachedFreeCameraField, cameraController, m_cachedFreeCamera);
+
+                UIView.Show(UIView.HasModalInput() || !m_cachedFreeCamera);
+                Singleton<NotificationManager>.instance.NotificationsVisible = !m_cachedFreeCamera;
+                Singleton<GameAreaManager>.instance.BordersVisible = !m_cachedFreeCamera;
+                Singleton<DistrictManager>.instance.NamesVisible = !m_cachedFreeCamera;
+                Singleton<PropManager>.instance.MarkersVisible = !m_cachedFreeCamera;
+                Singleton<GuideManager>.instance.TutorialDisabled = m_cachedFreeCamera;
+                Singleton<DisasterManager>.instance.MarkersVisible = !m_cachedFreeCamera;
+                Singleton<NetManager>.instance.RoadNamesVisible = !m_cachedFreeCamera;
+            }
+
+            Util.GetPrivate<Camera>(cameraController, "m_camera").rect = new Rect(0f, 0f, 1f, 1f);
+        }
+
         public void OnRenderImage(RenderTexture src, RenderTexture dst)
         {
             if (fullResRT == null)
@@ -234,7 +304,11 @@ namespace DynamicResolution
             mainCamera.Render();
             mainCamera.targetTexture = null;
             mainCamera.rect = oldRect;
-            
+
+#if DEBUG
+            CameraHook.mainCameraRect = oldRect;
+#endif
+
             float factor = CameraHook.instance.currentSSAAFactor;
 
             if (factor != 1.0f && halfVerticalResRT != null)
