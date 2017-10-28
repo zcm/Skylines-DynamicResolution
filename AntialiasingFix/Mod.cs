@@ -37,7 +37,7 @@ namespace DynamicResolution
             generalHelper.AddButton("Reset to default settings", ResetToDefaultSettings);
             generalHelper.AddSpace(20);
 
-            sliderMaxDropDown = (UIDropDown)generalHelper.AddDropdown("Slider Maximum", new string[] { "300% (default)", "400% (~GTX 880)", "500% (~GTX 980 Ti)" }, -1, OnSliderMaximumChanged);
+            sliderMaxDropDown = (UIDropDown)generalHelper.AddDropdown("Slider Maximum", new string[] { "300% (default)", "400% (~GTX 980)", "500% (~GTX 1070)" }, -1, OnSliderMaximumChanged);
             sliderMaxDropDown.width = 300;
             sliderMaxDropDown.selectedIndex = config.sliderMaximumIndex;
             UILabel sliderMaxLabel1 = generalPanel.AddUIComponent<UILabel>();
