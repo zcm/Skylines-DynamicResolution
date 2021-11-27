@@ -38,6 +38,10 @@ namespace AssetBundles
 			case BuildTarget.StandaloneOSXIntel64:
 			case BuildTarget.StandaloneOSXUniversal:
 				return "OSX";
+			case BuildTarget.StandaloneLinux:
+			case BuildTarget.StandaloneLinux64:
+			case BuildTarget.StandaloneLinuxUniversal:
+				return "Linux";
 				// Add more build targets for your own.
 				// If you add more targets, don't forget to add the same platforms to GetPlatformForAssetBundles(RuntimePlatform) function.
 			default:
@@ -63,6 +67,8 @@ namespace AssetBundles
 				return "Windows";
 			case RuntimePlatform.OSXPlayer:
 				return "OSX";
+			case RuntimePlatform.LinuxPlayer:
+				return "Linux";
 				// Add more build targets for your own.
 				// If you add more targets, don't forget to add the same platforms to GetPlatformForAssetBundles(RuntimePlatform) function.
 			default:

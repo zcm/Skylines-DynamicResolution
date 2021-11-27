@@ -162,7 +162,23 @@ namespace DynamicResolution
 
         void LoadShaders()
         {
-            string assetsUri = "file:///" + modPath.Replace("\\", "/") + "/dynamicresolutionshaders";
+            string assetsUri;
+            if (Application.platform == RuntimePlatform.WindowsPlayer)
+            {
+                assetsUri = "file:///" + modPath.Replace("\\", "/") + "/dynamicresolutionshaders_windows";
+            }
+            else if (Application.platform == RuntimePlatform.OSXPlayer)
+            {
+                assetsUri = "file:///" + modPath.Replace("\\", "/") + "/dynamicresolutionshaders_mac";
+            }
+            else if (Application.platform == RuntimePlatform.LinuxPlayer)
+            {
+                assetsUri = "file:///" + modPath.Replace("\\", "/") + "/dynamicresolutionshaders_linux";
+            }
+            else
+            {
+                throw new Exception("DynamicResolution: Unsupported platform!");
+            }
             WWW www = new WWW(assetsUri);
             AssetBundle assetBundle = www.assetBundle;
 
