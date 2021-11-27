@@ -1,7 +1,7 @@
 ManifestFileVersion: 0
-CRC: 2477670054
+CRC: 2436188850
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: dynamicresolutionshaders_windows
+      Name: dynamicresolutionshaders_mac
       Dependencies: {}

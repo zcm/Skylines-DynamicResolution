@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 3773660925
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fd8ed7ed8f7759c9a3c57696a7785cbf
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cc7b69794a2bdada249e557ebbfded10
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/downsampleShader.shader
+- Assets/downsampleX2Shader.shader
+Dependencies: []
